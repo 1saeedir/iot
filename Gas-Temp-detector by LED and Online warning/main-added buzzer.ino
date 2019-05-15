@@ -24,7 +24,7 @@ const char* pass = "Saeed@123";
 #define dataWire     2
 #define sensorgas    3
 #define ledok       12
-#define ledokdo     13
+//#define ledokdo     13
 #define DOUTpin     14
 #define ledwar      15
 #define lednarenji  16
@@ -34,6 +34,7 @@ int limit;
 int value;
 int tmp ;
 int alert ;
+const int buzzer = 13; 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 OneWire myWire(dataWire);
 DallasTemperature sensors(&myWire);
@@ -42,6 +43,7 @@ String ApiKey = "93Y2UUCMQSDX733W";
 String path = "/update?key=" + ApiKey + "&field1=";
 String f2="&field2=";
 int ldr_value = 0;
+//-------------------------------Start Setup-----------------------------------
 void setup() {
 
 //sets the pin as an input OR OUTPUT -----------------
@@ -54,6 +56,7 @@ void setup() {
   pinMode(tmp, INPUT);
   pinMode(sensorgas, INPUT);
   pinMode(DOUTpin, INPUT);//sets the pin as an input to the arduino
+  pinMode(buzzer, OUTPUT);
 //sets the pin as an input OR OUTPUT -----------------
 
   
@@ -131,7 +134,11 @@ void loop() {
 
   if (value > 650 ){
     digitalWrite(lednarenji, HIGH);//if threshold not reached, LED remains off
-    digitalWrite(ledokdo, LOW);
+    tone(buzzer, 100);
+	delay(150); 
+	 noTone(buzzer);
+	 delay(1000)
+	 
     digitalWrite(ledok, LOW);
      lcd.clear();
       lcd.begin();
@@ -144,7 +151,7 @@ void loop() {
   }
   else{
 
-        digitalWrite(ledokdo, HIGH);
+    //    digitalWrite(ledokdo, HIGH);
     digitalWrite(lednarenji, LOW);//if limit has been reached, LED turns on as status indicator
   }
   
@@ -154,12 +161,28 @@ void loop() {
   if (tmp > 30) {
   digitalWrite(ledwar, HIGH);
   digitalWrite(ledok, LOW);
+  
+  
+   tone(buzzer, 100);
+	delay(150); 
+	 noTone(buzzer);
+	 delay(1000)
+  
+  
+  
   Serial.println("Start Alert ");
   lcd.println(" S:High  ");
   }
 else {
   digitalWrite(ledwar, LOW);
   digitalWrite(ledok, HIGH);
+  
+     tone(buzzer, 20);
+	delay(30); 
+	 noTone(buzzer);
+	 delay(30000)
+  
+  
   
   Serial.println("No Alert ");
   lcd.println(" S:Norm  ");
