@@ -165,6 +165,8 @@ else {
   lcd.println(" S:Norm  ");
   }
     //--------------------------- Sharte DAMA ---------------------
+	
+	//-----------------------Send Data-------------------------------
   WiFiClient client;
   const int httpPort = 80;
   if (!client.connect(host, httpPort)) {
@@ -177,6 +179,7 @@ else {
   client.print(String("GET ") + path + tmp + f2 + value + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: keep-alive\r\n\r\n");
+			   //-----------------------Send Data-------------------------------//
        
   delay(10000);
 }
