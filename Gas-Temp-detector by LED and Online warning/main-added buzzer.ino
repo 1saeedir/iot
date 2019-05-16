@@ -51,7 +51,7 @@ void setup() {
   pinMode(redalert, OUTPUT);
     pinMode(ledwar, OUTPUT);
   pinMode(ledok, OUTPUT);
-  pinMode(ledokdo, OUTPUT);
+//  pinMode(ledokdo, OUTPUT);
   pinMode(lednarenji, OUTPUT);
   pinMode(tmp, INPUT);
   pinMode(sensorgas, INPUT);
@@ -131,14 +131,15 @@ void loop() {
       lcd.print("Gas :");
       lcd.print(value);
 //-------------------- LCD1602 Prints --------------------//
+value = 800;
 
   if (value > 650 ){
     digitalWrite(lednarenji, HIGH);//if threshold not reached, LED remains off
     tone(buzzer, 100);
-	delay(150); 
-	 noTone(buzzer);
-	 delay(1000)
-	 
+  delay(150); 
+   noTone(buzzer);
+   delay(1000);
+   
     digitalWrite(ledok, LOW);
      lcd.clear();
       lcd.begin();
@@ -164,9 +165,9 @@ void loop() {
   
   
    tone(buzzer, 100);
-	delay(150); 
-	 noTone(buzzer);
-	 delay(1000)
+  delay(150); 
+   noTone(buzzer);
+   delay(1000);
   
   
   
@@ -178,9 +179,9 @@ else {
   digitalWrite(ledok, HIGH);
   
      tone(buzzer, 20);
-	delay(30); 
-	 noTone(buzzer);
-	 delay(30000)
+  delay(30); 
+   noTone(buzzer);
+   delay(30000);
   
   
   
@@ -188,8 +189,8 @@ else {
   lcd.println(" S:Norm  ");
   }
     //--------------------------- Sharte DAMA ---------------------
-	
-	//-----------------------Send Data-------------------------------
+  
+  //-----------------------Send Data-------------------------------
   WiFiClient client;
   const int httpPort = 80;
   if (!client.connect(host, httpPort)) {
@@ -202,7 +203,7 @@ else {
   client.print(String("GET ") + path + tmp + f2 + value + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: keep-alive\r\n\r\n");
-			   //-----------------------Send Data-------------------------------//
+         //-----------------------Send Data-------------------------------//
        
   delay(10000);
 }
