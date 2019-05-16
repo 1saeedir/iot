@@ -112,6 +112,7 @@ void loop() {
   limit= digitalRead(DOUTpin);//reads the digital value from the CO sensor's DOUT pin
      sensors.requestTemperatures();
    tmp = sensors.getTempCByIndex(0);
+   baar=0;
 //-------------------- VARS--------------------//
 
 //-------------------- Serial Prints --------------------
@@ -138,7 +139,7 @@ void loop() {
 //-------------------- LCD1602 Prints --------------------//
   if (value > 650 ){
     
-    while (baar < 5) {
+    while (baar < 10) {
    
       tone(buzzer, 700);
  delay(500); 
@@ -173,7 +174,7 @@ void loop() {
 
   if (tmp > 29) {
 
-    while (baar < 5) {
+    while (baar < 10) {
    
       tone(buzzer, 400);
  delay(300); 
@@ -196,6 +197,7 @@ void loop() {
   
   }
 else {
+  
   digitalWrite(ledwar, LOW);
   digitalWrite(ledok, HIGH);
   
@@ -223,3 +225,4 @@ else {
        
   delay(10000);
 }
+
