@@ -2,7 +2,7 @@
  *
  *  This sketch sends data via HTTP GET requests to api.thingspeak.com of the value on
  *  LDR sensor on ESP8266 development board - Wittyboard. You need an api_key from Thingspeak.
- * 
+ *
  *  Based on: https://vaasa.hacklab.fi/2016/02/06/esp8266-on-nodemcu-board-ds18b20-arduinoide-thingspeak/
  *  ESP8266 Witty: http://www.schatenseite.de/en/2016/04/22/esp8266-witty-cloud-module/
  */
@@ -10,7 +10,7 @@
 #include <ESP8266WebServer.h>
 #include <DallasTemperature.h>
 #include <OneWire.h>
-#include <Wire.h> 
+#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
 #include <MFRC522.h>
@@ -35,7 +35,7 @@ int value;
 int tmp ;
 int alert ;
 int baar;
-const int buzzer = 13; 
+const int buzzer = 13;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 OneWire myWire(dataWire);
 DallasTemperature sensors(&myWire);
@@ -60,7 +60,7 @@ void setup() {
   pinMode(buzzer, OUTPUT);
 //sets the pin as an input OR OUTPUT -----------------
 
-  
+
   Serial.begin(115200);
   Serial.println("");
   Serial.print("Connecting to ");
@@ -100,11 +100,11 @@ lcd.begin();
  lcd.setCursor(0,0);
 lcd.print("   Connected ;) ");
       tone(buzzer, 800);
- delay(500); 
+ delay(500);
     noTone(buzzer);
    delay(200);
 delay(1000);
-  
+
 }
 void loop() {
 //-------------------- VARS--------------------
@@ -120,7 +120,7 @@ void loop() {
   Serial.println(value);//prints the CO value
   Serial.print("Limit: ");
   Serial.println(limit);//prints the limit reached as either LOW or HIGH (above or underneath)
-  Serial.println("DONE"); 
+  Serial.println("DONE");
   Serial.print("Temperature for Device 1 is: ");
   Serial.println(tmp);
   Serial.println(sensorgas);
@@ -138,20 +138,20 @@ void loop() {
       lcd.print(value);
 //-------------------- LCD1602 Prints --------------------//
   if (value > 650 ){
-    
+
     while (baar < 10) {
-   
+
       tone(buzzer, 700);
- delay(500); 
+ delay(500);
    noTone(buzzer);
    delay(200);
    baar++;
-   
+
 }
 
     digitalWrite(lednarenji, HIGH);//if threshold not reached, LED remains off
-   
-  
+
+
     digitalWrite(ledok, LOW);
      lcd.clear();
       lcd.begin();
@@ -167,20 +167,20 @@ void loop() {
     //    digitalWrite(ledokdo, HIGH);
     digitalWrite(lednarenji, LOW);//if limit has been reached, LED turns on as status indicator
   }
-  
- 
+
+
 
       //--------------------------- Sharte DAMA ---------------------//
 
   if (tmp > 29) {
 
     while (baar < 10) {
-   
+
       tone(buzzer, 400);
- delay(300); 
+ delay(300);
    noTone(buzzer);
    delay(300);
-   
+
    digitalWrite(ledwar, HIGH);
    delay(500);
    digitalWrite(ledwar, LOW);
@@ -190,30 +190,30 @@ void loop() {
 
   lcd.println(" S:High  ");
   digitalWrite(ledok, LOW);
-  
-   
-  
+
+
+
   Serial.println("Start Alert ");
-  
+
   }
 else {
-  
+
   digitalWrite(ledwar, LOW);
   digitalWrite(ledok, HIGH);
-  
- 
-  
+
+
+
   Serial.println("No Alert ");
   lcd.println(" S:Norm  ");
   }
     //--------------------------- Sharte DAMA ---------------------
-  
+
   //-----------------------Send Data-------------------------------
   WiFiClient client;
   const int httpPort = 80;
   if (!client.connect(host, httpPort)) {
     Serial.println("connection failed");
-    
+
     lcd.print("WIFI Failed");
     delay(500);
     return;
@@ -222,7 +222,6 @@ else {
                "Host: " + host + "\r\n" +
                "Connection: keep-alive\r\n\r\n");
          //-----------------------Send Data-------------------------------//
-       
+
   delay(10000);
 }
-
