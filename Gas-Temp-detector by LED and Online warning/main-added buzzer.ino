@@ -34,6 +34,7 @@ int limit;
 int value;
 int tmp ;
 int alert ;
+int baar;
 const int buzzer = 13; 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 OneWire myWire(dataWire);
@@ -98,6 +99,10 @@ lcd.clear();
 lcd.begin();
  lcd.setCursor(0,0);
 lcd.print("   Connected ;) ");
+      tone(buzzer, 800);
+ delay(500); 
+    noTone(buzzer);
+   delay(200);
 delay(1000);
   
 }
@@ -131,15 +136,21 @@ void loop() {
       lcd.print("Gas :");
       lcd.print(value);
 //-------------------- LCD1602 Prints --------------------//
-value = 800;
-
   if (value > 650 ){
-    digitalWrite(lednarenji, HIGH);//if threshold not reached, LED remains off
-    tone(buzzer, 100);
-  delay(150); 
-   noTone(buzzer);
-   delay(1000);
+    
+    while (baar < 5) {
    
+      tone(buzzer, 700);
+ delay(500); 
+   noTone(buzzer);
+   delay(200);
+   baar++;
+   
+}
+
+    digitalWrite(lednarenji, HIGH);//if threshold not reached, LED remains off
+   
+  
     digitalWrite(ledok, LOW);
      lcd.clear();
       lcd.begin();
@@ -158,32 +169,37 @@ value = 800;
   
  
 
-      //--------------------------- Sharte DAMA ---------------------
-  if (tmp > 30) {
-  digitalWrite(ledwar, HIGH);
+      //--------------------------- Sharte DAMA ---------------------//
+
+  if (tmp > 29) {
+
+    while (baar < 5) {
+   
+      tone(buzzer, 400);
+ delay(300); 
+   noTone(buzzer);
+   delay(300);
+   
+   digitalWrite(ledwar, HIGH);
+   delay(500);
+   digitalWrite(ledwar, LOW);
+   delay(100);
+   baar++;
+}
+
+  lcd.println(" S:High  ");
   digitalWrite(ledok, LOW);
   
-  
-   tone(buzzer, 100);
-  delay(150); 
-   noTone(buzzer);
-   delay(1000);
-  
-  
+   
   
   Serial.println("Start Alert ");
-  lcd.println(" S:High  ");
+  
   }
 else {
   digitalWrite(ledwar, LOW);
   digitalWrite(ledok, HIGH);
   
-     tone(buzzer, 20);
-  delay(30); 
-   noTone(buzzer);
-   delay(30000);
-  
-  
+ 
   
   Serial.println("No Alert ");
   lcd.println(" S:Norm  ");
