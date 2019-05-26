@@ -1,0 +1,35 @@
+
+#include <Arduino.h>
+#include <U8g2lib.h>
+
+#ifdef U8X8_HAVE_HW_SPI
+#include <SPI.h>
+#endif
+#ifdef U8X8_HAVE_HW_I2C
+#include <Wire.h>
+#endif
+
+U8G2_SSD1306_128X32_UNIVISION_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE);   // Adafruit Feather ESP8266/32u4 Boards + FeatherWing OLED
+
+const uint16_t my_kerning_table[] = {
+  /* first char, second char, gap reduction value */
+  0x646, 0x627, 4, /* ن and ا */
+  0x627, 0x647, 5, /* ا and ه */
+  0x647, 0x62C, 6, /* ه and ج */
+  0x645, 0x627, 3, /* م and ا */
+  0x627, 0x644, 4, /* ا and ل */
+  0x644, 0x633, 2, /* ل and س */
+
+  /* this line terminates the table */
+  0xffff, 0xffff, 0xffff
+};
+
+void setup() {
+ u8g2.begin();
+  u8g2.setFont(u8g2_font_unifont_t_arabic);
+  u8g2.drawExtUTF8(80, 64 / 2, 1, my_kerning_table, "کندوهاست : ");
+  u8g2.sendBuffer();
+}
+void loop(void) {
+
+}
