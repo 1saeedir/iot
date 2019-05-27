@@ -23,6 +23,15 @@
   | LED -      |   GND    |
   +-----------------------+
 */
+// waiting LCD Green : 2D
+// Warning LCD RED : 3D
+// accept LED purple : 4D
+// Servo Command : 5D , Servo Black : GND , Servo Red : 5v
+// waiting LCD Green : 2D
+// Warning LCD RED : 3D
+// accept LED purple : 4D
+// Servo Command : 5D , Servo Black : GND , Servo Red : 5v
+// buzzer : 8D
 #include <SPI.h>
 #include <MFRC522.h>
 #define LED_PIN A0
@@ -34,20 +43,25 @@
 #define SS_PIN 10
 #define RST_PIN 9
 #include <Servo.h>
+
 Servo servo1;
+
 int degree, serial_data = 0 , read_degree = 0;
+const int buzzer = 8;
 MFRC522 rc552(SS_PIN, RST_PIN); // Instance of the class
 //change here the UID of the card/cards that you want to give access//آبی تگ کوچک / خط دوم
 byte storedUID[] = {86, 29, 90, 165}; //blue tag
 byte stored2UID[] = {165, 122, 27, 16}; // white card
 byte stored3UID[] = {41, 143, 82, 162}; // Sekkeii sefid 1
 void setup() {
+  servo1.attach(5); // تعیین این که سرو موتورمون به کدوم پایه وصل هستش
   Serial.begin(115200);
   pinMode(LED3_PIN, OUTPUT);
     pinMode(LEDwarning_PIN, OUTPUT);
         pinMode(LED_wait, OUTPUT);
-   servo1.attach(5); // تعیین این که سرو موتورمون به کدوم پایه وصل هستش
+   
   pinMode(LED_PIN, OUTPUT);  // initialize LED_PIN as an output.
+   pinMode(buzzer, OUTPUT);
     pinMode(LED2_PIN, OUTPUT);  // initialize LED2_PIN as an output.
   SPI.begin(); // Init SPI bus
   rc552.PCD_Init(); // Init MFRC522
@@ -88,24 +102,21 @@ void loop() {
  Serial.println("Cad ok , Unlocking ... ");
       digitalWrite(LED3_PIN, HIGH);
   delay(1000);
-  servo1.write(40);
-delay(500);
-//servo1.write(-150);
-//delay(2000);
-servo1.write(0);
-delay(15000);
-servo1.write(40);
-delay(500);
-digitalWrite(LED3_PIN, LOW);
-//servo1.write(-50);
 
+
+servo1.write(65);
+delay(1400);
+servo1.write(85);
+digitalWrite(LED3_PIN, LOW);
   }
 
   else {
     Serial.println("Access denied");
     digitalWrite(LED_PIN, LOW);
     digitalWrite(LEDwarning_PIN, HIGH);
-    delay(5000);
+         tone(buzzer, 500); delay(300);  noTone(buzzer); delay(300); tone(buzzer, 500); delay(300);  noTone(buzzer); delay(300);
+
+    delay(2000);
     digitalWrite(LEDwarning_PIN, LOW);
   }
   // Halt PICC
